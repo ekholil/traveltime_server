@@ -27,28 +27,29 @@ async function run() {
       const userCollection = client.db("traveltime").collection("users");
      
       
-     // find all products
+     // find all blogs
       app.get('/blogs', async(req, res) => {
-        const result = await blogCollection.find({}).toArray()
+        const query = {status: 'approved'}
+        const result = await blogCollection.find(query).toArray()
         res.send(result) 
       })
 
      
 
       // api for find single product with id
-      // app.get('/products/:id', async(req, res) => {
-      //   const id = req.params.id
-      //   const query = {_id : ObjectId(id)}
-      //   const result = await booksCollection.findOne(query)
-      //   res.send(result)
-      // })
+      app.get('/blog/:id', async(req, res) => {
+        const id = req.params.id
+        const query = {_id : ObjectId(id)}
+        const result = await blogCollection.findOne(query)
+        res.send(result)
+      })
     
       // //post api
-      // app.post('/addproduct', async(req, res) => {
-      //   const data = req.body;
-      //   const result = await booksCollection.insertOne(data)
-      //   res.json(result)
-      // })
+      app.post('/addblog', async(req, res) => {
+        const data = req.body;
+        const result = await blogCollection.insertOne(data)
+        res.json(result)
+      })
      
     
       // check admin
