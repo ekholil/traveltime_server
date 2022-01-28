@@ -83,23 +83,46 @@ async function run() {
         console.log(result)
       })
       // make admin api 
-      app.put('/users/admin', async(req, res) => {
+      app.put('/makeadmin', async(req, res) => {
         const user = req.body;
         const filter = {email : user.email}
         const updateDoc = {$set : {role: 'admin'}}
-        const result = await usersCollection.updateOne(filter, updateDoc)
+        const result = await userCollection.updateOne(filter, updateDoc)
         res.json(result)
       })
       // // api for find orders by email
-      app.get('/myorders/:email', async(req, res) => {
-        const email = req.params.email;
-        const query = {email : email}
-        const result = await ordersCollection.find(query).toArray()
+      // app.get('/myorders/:email', async(req, res) => {
+      //   const email = req.params.email;
+      //   const query = {email : email}
+      //   const result = await ordersCollection.find(query).toArray()
+      //   res.send(result)
+      // })
+     // //delete blog
+     app.delete('/deleteblog/:id', async(req, res) => {
+      const id = req.params.id;
+      const query = {_id : ObjectId(id)}
+      const result = await blogCollection.deleteOne(query)
+      res.json(result)
+      console.log('delete req for ' + id)
+    })
+      // post approve api
+      
+      app.put('/updatestatus/:id', async(req, res) => {
+        const id = req.params.id;
+        const item = req.body;
+        const filter = {_id : ObjectId(id)}
+        const options = { upsert: true };
+        // create a document that sets the plot of the movie
+        const updateDoc = {
+          $set: {
+            status: item.status,
+          },
+        };
+        const result = await blogCollection.updateOne(filter, updateDoc, options)
+        console.log('upadating blog ', id)
         res.send(result)
+        
       })
-    
-      // //delete api from manage order
-  
       
    
       
