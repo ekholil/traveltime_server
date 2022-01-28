@@ -63,8 +63,15 @@ async function run() {
         }
         res.json({admin: isAdmin})
       })
-      // //post api for save user in db
+      //save user in db
       app.post('/users', async(req, res) => {
+        const data = req.body;
+        const result = await userCollection.insertOne(data)
+        res.send(result)
+        console.log(result)
+      })
+      //save user in db
+      app.put('/users', async(req, res) => {
         const data = req.body;
         const result = await userCollection.insertOne(data)
         res.send(result)
