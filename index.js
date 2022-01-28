@@ -28,6 +28,11 @@ async function run() {
      
       
      // find all blogs
+      app.get('/allblogs', async(req, res) => {
+        const result = await blogCollection.find({}).toArray()
+        res.send(result) 
+      })
+     // find all approved blogs
       app.get('/blogs', async(req, res) => {
         const query = {status: 'approved'}
         const result = await blogCollection.find(query).toArray()
